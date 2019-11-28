@@ -37,8 +37,8 @@ output = ''
 
 for reposlug in args.repos:
     unlabelled_issues = []
-    for issue in g.get_repo(reposlug).get_issues():
-        if issue.state == 'open' and not hasAnyOfTheLabels(issue, args.labels):
+    for issue in g.get_repo(reposlug).get_issues(state='open'):
+        if not hasAnyOfTheLabels(issue, args.labels):
             unlabelled_issues.append(issue)
     if len(unlabelled_issues) > 0:
         output += "Repo %s:\n" % reposlug
