@@ -33,12 +33,15 @@ def hasAnyOfTheLabels(issue: github.Issue.Issue, expected_labels: [str]):
             return True
     return False
 
+def isPullRequest(issue: github.Issue.Issue):
+    return issue._pull_request != github.GithubObject.NotSet
+
 output = ''
 
 for reposlug in args.repos:
     unlabelled_issues = []
     for issue in g.get_repo(reposlug).get_issues(state='open'):
-        if not hasAnyOfTheLabels(issue, args.labels):
+        if not isPullRequest(issue) and not hasAnyOfTheLabels(issue, args.labels):
             unlabelled_issues.append(issue)
     if len(unlabelled_issues) > 0:
         output += "Repo %s:\n" % reposlug
