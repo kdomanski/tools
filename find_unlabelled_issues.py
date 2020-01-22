@@ -49,10 +49,11 @@ for reposlug in args.repos:
             output += "\thttps://github.com/%s/issues/%d %s\n" % (reposlug, i.number, i.title)
         output += '\n'
 
-if args.slack_webhook == None:
-    print(output)
-else:
-    output = ("The following issues are missing %s labels:\n\n" % args.labels) + output
-    payload = json.dumps({'channel': '@kamil', 'text': output})
-    r = requests.post(url = args.slack_webhook, data = payload)
-    print(r)
+if output != '':
+    if args.slack_webhook == None:
+        print(output)
+    else:
+        output = ("The following issues are missing %s labels:\n\n" % args.labels) + output
+        payload = json.dumps({'channel': '@kamil', 'text': output})
+        r = requests.post(url = args.slack_webhook, data = payload)
+        print(r)
